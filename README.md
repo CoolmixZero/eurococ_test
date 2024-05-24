@@ -7,3 +7,5 @@
 - run `stop-app.bat` to stop docker compose
 
 Used Vue.js and FastAPi. MySQL as database.
+
+![image](https://github.com/CoolmixZero/eurococ_test/assets/107999456/66c57504-694d-4b4e-a433-e5aac69aa50f)
