@@ -29,7 +29,10 @@ async def get_all_vozidla(db_connection: MySQLConnection = Depends(get_db_connec
     return [Vozidlo(**vozidlo) for vozidlo in result]
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=Vozidlo)
-async def create_vozidlo(vozidlo: dict = Body(), db_connection: MySQLConnection = Depends(get_db_connection)):
+async def create_vozidlo(vozidlo: dict = Body(), db_connection: MySQLConnection = Depends(get_db_connection)):    
+    vozidlo = NewVozidlo(**vozidlo)
+    vozidlo.Datum_vytvorenia = str(vozidlo.Datum_vytvorenia).split("T")[0]
+    
     cursor = db_connection.cursor()
     cursor.execute(
         "INSERT INTO Vozidla (Kategoria_vozidla, Znacka_vozidla, Predajna_cena, Datum_vytvorenia, Stav) VALUES (%s, %s, %s, %s, %s)",

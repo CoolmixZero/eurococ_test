@@ -6,7 +6,7 @@ CREATE TABLE Vozidla (
     Kategoria_vozidla VARCHAR(255),
     Znacka_vozidla VARCHAR(255),
     Predajna_cena DECIMAL(10, 2),
-    Datum_vytvorenia DATE,
+    Datum_vytvorenia VARCHAR(255),
     Stav VARCHAR(255),
     PRIMARY KEY (id)
 );

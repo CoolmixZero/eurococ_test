@@ -7,7 +7,7 @@ class Vozidlo(BaseModel):
     Kategoria_vozidla: str
     Znacka_vozidla: str
     Predajna_cena: float
-    Datum_vytvorenia: date
+    Datum_vytvorenia: str
     Stav: str
     
     
@@ -15,5 +15,5 @@ class NewVozidlo(BaseModel):
     Kategoria_vozidla: str
     Znacka_vozidla: str
     Predajna_cena: float
-    Datum_vytvorenia: date  # Use datetime for dates
+    Datum_vytvorenia: str
     Stav: str

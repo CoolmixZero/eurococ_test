@@ -1,21 +1,35 @@
-FROM node:20.0.0-alpine as build-stage
+# FROM node:20.0.0-alpine as build-stage
 
+# WORKDIR /app
+
+# COPY package*.json ./
+
+# RUN yarn install 
+
+# COPY . .
+
+# RUN yarn build
+
+# FROM nginx:stable-alpine as production-stage
+
+# COPY --from=build-stage /app/dist /usr/share/nginx/html
+
+# # COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# EXPOSE 80
+
+# CMD ["nginx", "-g", "daemon off;"]
+
+# build stage
+FROM node:lts-alpine as build-stage
 WORKDIR /app
-
 COPY package*.json ./
-
-RUN yarn install 
-
+RUN npm install
 COPY . .
+RUN npm run build
 
-RUN yarn build
-
+# production stage
 FROM nginx:stable-alpine as production-stage
-
 COPY --from=build-stage /app/dist /usr/share/nginx/html
-
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
-
 EXPOSE 80
-
 CMD ["nginx", "-g", "daemon off;"]
