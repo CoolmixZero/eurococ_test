@@ -1,5 +1,4 @@
-from typing import Annotated
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv

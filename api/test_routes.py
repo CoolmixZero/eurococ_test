@@ -1,5 +1,3 @@
-import sys
-import asyncio
 import pytest
 from fastapi import HTTPException
 
@@ -86,6 +84,7 @@ async def test_get_vozidlo_by_id(db_connection):
     assert response.Datum_vytvorenia == new_vozidlo.Datum_vytvorenia
     assert response.model_dump_json()
 
+# Test for GET /vozidla/{vozidlo_id} Not Found
 @pytest.mark.asyncio
 async def test_get_vozidlo_by_id_not_found(db_connection):
     # Simulate a GET request with a non-existent ID

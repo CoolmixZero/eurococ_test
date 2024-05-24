@@ -2,6 +2,7 @@ import sys
 from fastapi import APIRouter, HTTPException, status, Depends, Body
 from mysql.connector import MySQLConnection
 from typing import List
+
 sys.path.append("api")
 from models import Vozidlo, NewVozidlo
 from database import get_db_connection
@@ -12,13 +13,6 @@ router = APIRouter(
     tags=["vozidla"]
 )
 
-# # In-memory data storage (replace with database later)
-# VOZIDLA = [ 
-#     {"id": generate_id(),"Kategoria_vozidla": 'LKW', "Znacka_vozidla": 'BMW', "Predajna_cena": 100, "Datum_vytvorenia": '2020-01-01', "Stav": 'Stornovane' },
-#     {"id": generate_id(), "Kategoria_vozidla": 'LKW', "Znacka_vozidla": 'AUDI', "Predajna_cena": 200, "Datum_vytvorenia": '2021-01-01', "Stav": 'Vybavene' },
-#     {"id": generate_id(), "Kategoria_vozidla": 'PKW', "Znacka_vozidla": 'VW', "Predajna_cena": 300, "Datum_vytvorenia": '2022-01-01', "Stav": 'Vybavene' },
-#     {"id": generate_id(), "Kategoria_vozidla": 'LKW', "Znacka_vozidla": 'MERCEDES', "Predajna_cena": 400, "Datum_vytvorenia": '2023-01-01', "Stav": 'Vybavuje sa' }
-# ]
 
 @router.get("/", response_model=List[Vozidlo])
 async def get_all_vozidla(db_connection: MySQLConnection = Depends(get_db_connection)):
@@ -27,6 +21,7 @@ async def get_all_vozidla(db_connection: MySQLConnection = Depends(get_db_connec
     result = cursor.fetchall()
     cursor.close()
     return [Vozidlo(**vozidlo) for vozidlo in result]
+
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=Vozidlo)
 async def create_vozidlo(vozidlo: dict = Body(), db_connection: MySQLConnection = Depends(get_db_connection)):    
@@ -44,6 +39,7 @@ async def create_vozidlo(vozidlo: dict = Body(), db_connection: MySQLConnection 
 
     return Vozidlo(id=vozidlo_id, **vozidlo.model_dump())
 
+
 @router.get("/{vozidlo_id}", response_model=Vozidlo)
 async def get_vozidlo(vozidlo_id: str, db_connection: MySQLConnection = Depends(get_db_connection)):
     cursor = db_connection.cursor(dictionary=True)
@@ -56,10 +52,12 @@ async def get_vozidlo(vozidlo_id: str, db_connection: MySQLConnection = Depends(
 
     return Vozidlo(**result)
 
+
 @router.put("/{vozidlo_id}", response_model=Vozidlo)
 async def update_vozidlo(vozidlo_id: str, new_vozidlo: NewVozidlo, db_connection: MySQLConnection = Depends(get_db_connection)):
     cursor = db_connection.cursor()
     
+    # Update Vozidlo in database    
     query = "UPDATE Vozidla SET Kategoria_vozidla = %s, Znacka_vozidla = %s, Predajna_cena = %s, Datum_vytvorenia = %s, Stav = %s WHERE id = %s"
     cursor.execute(
         query,
